@@ -6,8 +6,56 @@ public class Sort {
     }
 
     private static int[] heapSort(int[] nums) {
-//        int result
+        int[] result = new int[nums.length + 1];
+        result[0] = 0;
+        //首位为空的数组
+        for (int i = 0; i < nums.length; i++) {
+            result[i + 1] = nums[i];
+        }
+        //构造堆有序
+        int N = nums.length;
+        for (int i = N / 2; i >= 1; i--) {
+            sink(result, i, N);
+        }
+        printArray("构造堆有序",result);
+        //下沉堆排序
+        while(N > 1){
+            swap(result,1,N--);
+            sink(result,1,N);
+        }
+        printArray(result);
+        //去掉首位的数据
+        for (int i = 0; i < nums.length; i++) {
+            nums[i] = result[i + 1];
+        }
         return nums;
+    }
+
+    /**
+     * 保证k节点和最后一个节点交换后，去掉最后一个节点（即原来的k节点）
+     * 留下的堆还是有序的
+     * @param array
+     * @param k
+     * @param N
+     */
+    private static void sink(int[] array, int k, int N) {
+        while (2 * k <= N) {
+            int j = 2 * k;
+            if (j < N && less(array, j, j + 1)) {
+                j++;
+            }
+            //经过此步骤，j为子堆中较大的数
+            if (!less(array, k, j)) {
+                //如果父节点大于子节点，退出循环
+                break;
+            }
+            swap(array, k, j);
+            k = j;
+        }
+    }
+
+    private static boolean less(int[] array, int i, int j) {
+        return array[i] < array[j];
     }
 
     /**
@@ -105,6 +153,10 @@ public class Sort {
         }
     }
 
+    private static void printArray(String content,int[] nums) {
+        System.out.print(content);
+        printArray(nums);
+    }
     private static void printArray(int[] nums) {
         int length = nums.length;
         for (int i = 0; i < length; i++) {
@@ -122,7 +174,7 @@ public class Sort {
         // write your code here
         int[] nums = new int[]{3, 5, 1, 64, 62, 66, 73, 21};
         printArray(nums);
-        int[] result = sort(nums, SORT_TYPE.BUBBLE);
+        int[] result = sort(nums, SORT_TYPE.HEAP);
         printArray(result);
 
         int[] answer = new int[]{1, 3, 5, 21, 62, 64, 66, 73};
