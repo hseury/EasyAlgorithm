@@ -17,7 +17,6 @@ public class Sort {
         for (int i = N / 2; i >= 1; i--) {
             sink(result, i, N);
         }
-        printArray("构造堆有序",result);
         //下沉堆排序
         while(N > 1){
             swap(result,1,N--);
@@ -81,7 +80,23 @@ public class Sort {
      * @return
      */
     private static int[] mergeSort(int[] nums) {
+        int[] result = new int[nums.length];
+        mergeSort(result,nums,0,nums.length - 1);
         return nums;
+    }
+
+    private static void mergeSort(int[] result,int[] aux,int low, int high){
+        if (high <= low){
+            return;
+        }
+
+        int mid = low + (high - low)/2;
+        mergeSort(result,aux,low,mid);
+        mergeSort(result,aux,mid+1,high);
+        merge(result,aux,low,mid,high);
+    }
+
+    private static void merge(int[] result,int[] a,int low,int mid,int high) {
     }
 
     /**
