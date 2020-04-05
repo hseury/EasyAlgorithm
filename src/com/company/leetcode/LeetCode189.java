@@ -4,27 +4,17 @@ import com.company.ArrayTools;
 
 public class LeetCode189 {
     public static void rotate(int[] nums, int k) {
-        int length = nums.length;
-        if (k >= length) {
-            return;
-        }
-
-        int[] a = new int[k];
-        int[] b = new int[length - k];
-
+        int[] current = new int[k];
+        int leng = nums.length;
+        k %= leng;
         for (int i = 0; i < k; i++) {
-            a[i] = nums[length - k + i];
+            current[i] = nums[leng - k + i];
         }
-        for (int j = 0; j < length - k; j++) {
-            b[j] = nums[j];
+        for (int i = (leng - 1); i > k - 1; i--) {
+            nums[i] = nums[i - k];
         }
-
-        for (int l = 0; l < length; l++) {
-            if (l < k) {
-                nums[l] = a[l];
-            } else {
-                nums[l] = b[l - k];
-            }
+        for (int i = 0; i < k; i++) {
+            nums[i] = current[i];
         }
     }
 
